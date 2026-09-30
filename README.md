@@ -1,131 +1,64 @@
-# MediSignal API
+# MediSignal API — Research Portfolio v0.2
 
-**FHIR-based Clinical Data Signal Stratification API Prototype**
+FHIR R4 synthetic data-quality experiment + explainable provenance API.
 
-MediSignal is a portfolio-oriented research prototype that demonstrates how structured
-FHIR R4 clinical data can be validated, transformed into features, evaluated with an
-explainable rule engine, and exposed through a REST API.
+> Synthetic data only. This project does not claim clinical accuracy, diagnosis, treatment benefit, real-world hospital error rates, or medical-device performance.
 
-> Research/education prototype only. Synthetic data and illustrative demo rules.
-> Not for diagnosis, treatment, triage, or clinical use.
+## Research question
 
-## What this repository demonstrates
+How much can unit standardization and explicit data-quality validation reduce silent signal-extraction errors caused by unit variation, missingness, duplicates, unsupported units, and implausible values in a reproducible synthetic FHIR R4 stress test?
 
-`FHIR R4 input → validation → feature extraction → signal engine → explainable JSON → REST API`
+## Reproducible experiment
 
-The repository includes:
+- 16 deterministic base profiles
+- 7 perturbations per profile
+- 112 unique synthetic patient cases
+- 3 pipelines per case
+- 336 pipeline evaluations
 
-- FastAPI backend
-- OpenAPI / Swagger documentation
-- FHIR R4 synthetic sample data
-- Explainable signal results
-- Web MVP
-- Automated API tests
-- Render deployment configuration
-- Version history in `CHANGELOG.md`
+| Pipeline | Correct | Silent error | Hold | Agreement among decided |
+|---|---:|---:|---:|---:|
+| Raw | 67.9% | 32.1% | 0.0% | 67.9% |
+| Standardized | 78.6% | 21.4% | 0.0% | 78.6% |
+| Validated | 42.9% | 0.0% | 57.1% | 100.0% |
 
-## API endpoints
+Interpretation: supported unit standardization reduced silent errors by 10.7 percentage points in this constructed stress test. Adding data-quality validation converted the remaining constructed unsafe cases into explicit hold outcomes. The 57.1% hold rate reflects deliberate fault enrichment and is not a real-world prevalence estimate.
 
-### `GET /health`
-Service health check.
+## Evidence layers
 
-### `POST /v1/signals/from-fhir`
-Accepts a FHIR R4 Bundle containing a Patient and supported Observation resources.
+1. Software verification: 39 automated tests in GitHub Actions.
+2. Research evidence: deterministic 112-case comparison with measured error, hold, and agreement rates.
+3. Provenance: raw measurement -> normalization -> quality warning -> rule evaluation -> output.
 
-Example output fields:
+## Live
 
-- `patient_id`
-- `signal_level`
-- `signal_count`
-- `extracted_features`
-- `triggered_signals`
-- `disclaimer`
+- Portfolio: https://medisignal-api-2z8j.onrender.com/
+- Swagger: https://medisignal-api-2z8j.onrender.com/docs
+- Results API: https://medisignal-api-2z8j.onrender.com/v1/research/results
+- Provenance API: POST /v1/research/trace
 
-## Run locally
+## Reproduce
 
-```bash
-python -m venv .venv
-```
+Install dependencies, then run:
 
-Windows:
+    pytest -q
+    python -m research.run_experiment
+    uvicorn app.main:app --reload
 
-```bash
-.venv\Scripts\activate
-```
+Expected v0.2 test result: 39 passed.
 
-Install and run:
+Full research protocol: research/PROTOCOL.md
 
-```bash
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
+## Background references
 
-Open:
-
-- Web MVP: `http://127.0.0.1:8000/`
-- Swagger: `http://127.0.0.1:8000/docs`
-- Health: `http://127.0.0.1:8000/health`
-
-## Deploy on Render
-
-Build command:
-
-```text
-pip install -r requirements.txt
-```
-
-Start command:
-
-```text
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
-
-A `render.yaml` file is included.
-
-## Repository structure
-
-```text
-.
-├── app/
-│   ├── main.py
-│   ├── fhir_parser.py
-│   ├── schemas.py
-│   └── signal_engine.py
-├── data/
-│   └── sample_fhir_bundle.json
-├── tests/
-│   └── test_api.py
-├── web/
-│   ├── index.html
-│   ├── app.js
-│   ├── data.js
-│   ├── config.js
-│   └── styles.css
-├── CHANGELOG.md
-├── README.md
-├── render.yaml
-├── requirements.txt
-└── .python-version
-```
-
-## Portfolio statement
-
-**Korean**
-
-합성 FHIR R4 의료데이터를 구조화하여 주요 관찰값을 추출하고,
-설명 가능한 규칙 기반 신호 분류 결과를 REST API/OpenAPI로 제공하는
-연구용 프로토타입을 구현했습니다.
-
-**English**
-
-Built a research prototype that parses synthetic FHIR R4 clinical data,
-extracts structured observations, and exposes explainable signal-stratification
-outputs through a REST API with OpenAPI documentation.
+- HL7 FHIR R4 Observation: https://hl7.org/fhir/R4/observation.html
+- HL7 FHIR R4 Quantity datatype: https://hl7.org/fhir/R4/datatypes.html
+- Weiskopf NG, Weng C. Methods and dimensions of electronic health record data quality assessment: enabling reuse for clinical research. J Am Med Inform Assoc. 2013;20(1):144-151. doi:10.1136/amiajnl-2011-000681
 
 ## Limitations
 
-- Synthetic data only in the public portfolio.
-- Demo thresholds are not presented as clinical guidelines.
-- No diagnostic or treatment claims.
-- A production/research-grade implementation would require validated clinical rules,
-  terminology and unit validation, governance, security, and appropriate clinical validation.
+- Synthetic, fault-enriched dataset
+- Demo rule fixture, not a validated clinical model
+- Limited unit-conversion table
+- Technical processability bounds, not clinical reference ranges
+- No real patient data and no claims about clinical performance
