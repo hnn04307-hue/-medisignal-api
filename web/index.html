@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MediSignal API</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233f;background:#f4f7fb}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1080px;margin:auto;padding:40px 24px 64px}
+.hero{background:#10233f;color:white;border-radius:24px;padding:38px;box-shadow:0 18px 48px #10233f20}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}.hero h1{font-size:44px;margin:10px 0 12px}
+.hero p{max-width:760px;line-height:1.65;color:#d7e1ef}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.tag{padding:8px 12px;border:1px solid #ffffff2b;border-radius:999px;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.card{background:white;border:1px solid #dfe7f1;border-radius:20px;padding:24px;box-shadow:0 8px 24px #10233f0b}
+h2{margin:0 0 12px;font-size:20px}.muted{color:#607089;font-size:14px;line-height:1.6}
+label{font-size:13px;font-weight:700}input{width:100%;padding:11px;border:1px solid #cad5e2;border-radius:10px;margin:6px 0 12px}
+button,a.btn{display:inline-block;border:0;border-radius:10px;background:#153b6b;color:white;padding:11px 16px;font-weight:700;text-decoration:none;cursor:pointer}
+.result{margin-top:16px;padding:15px;border-radius:12px;background:#f5f8fc;border:1px solid #dce6f2}.level{font-size:24px;font-weight:800;margin-bottom:8px}
+.signal{padding:10px 0;border-top:1px solid #e0e7f0}.small{font-size:12px;color:#6d7b90}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#0e1b2b;color:#d8e7ff;padding:14px;border-radius:12px;overflow:auto}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero h1{font-size:34px}}
+</style>
+</head>
+<body><main class="wrap">
+<section class="hero">
+<div class="kicker">FHIR R4 · FastAPI · OpenAPI</div>
+<h1>MediSignal API</h1>
+<p>A research portfolio prototype that turns structured synthetic FHIR R4 observations into transparent, explainable demo signals through a deployable REST API.</p>
+<div class="tags"><span class="tag">Synthetic data only</span><span class="tag">Explainable rules</span><span class="tag">Not for clinical use</span></div>
+<div class="links"><a class="btn" href="/docs">Open Swagger API</a><a class="btn" href="/health">Health check</a></div>
+</section>
+<section class="grid">
+<div class="card"><h2>Interactive demonstration</h2><p class="muted">Edit the synthetic values, then run the API. Values are converted into a FHIR R4 Bundle in the browser and sent to <code>/v1/signals/from-fhir</code>.</p>
+<label>Birth date</label><input id="birth" type="date" value="1958-03-10">
+<label>Systolic BP (mmHg)</label><input id="sys" type="number" value="152">
+<label>Diastolic BP (mmHg)</label><input id="dia" type="number" value="92">
+<label>BMI (kg/m²)</label><input id="bmi" type="number" step="0.1" value="31.2">
+<button onclick="run()">Analyze synthetic FHIR</button>
+<div id="result" class="result"><span class="small">No analysis run yet.</span></div></div>
+<div class="card"><h2>Data flow</h2>
+<div class="code">FHIR R4 Bundle
+    ↓
+Validation
+    ↓
+Feature extraction
+    ↓
+Explainable demo rules
+    ↓
+JSON signal response
+    ↓
+REST API / Swagger</div>
+<h2 style="margin-top:22px">Scope</h2><p class="muted">This project demonstrates interoperability-oriented data handling and API implementation. The included thresholds are educational examples, not validated clinical guidelines, risk predictions, diagnosis, treatment advice, or a medical device.</p>
+</div>
+</section>
+</main>
+<script>
+async function run(){
+ const patient="synthetic-patient-001";
+ const bundle={resourceType:"Bundle",type:"collection",entry:[
+  {resource:{resourceType:"Patient",id:patient,birthDate:document.getElementById("birth").value}},
+  {resource:{resourceType:"Observation",status:"final",subject:{reference:"Patient/"+patient},code:{coding:[{system:"http://loinc.org",code:"85354-9"}]},component:[
+   {code:{coding:[{system:"http://loinc.org",code:"8480-6"}]},valueQuantity:{value:+document.getElementById("sys").value,unit:"mmHg"}},
+   {code:{coding:[{system:"http://loinc.org",code:"8462-4"}]},valueQuantity:{value:+document.getElementById("dia").value,unit:"mmHg"}}]}},
+  {resource:{resourceType:"Observation",status:"final",subject:{reference:"Patient/"+patient},code:{coding:[{system:"http://loinc.org",code:"39156-5"}]},valueQuantity:{value:+document.getElementById("bmi").value,unit:"kg/m2"}}}
+ ]};
+ const box=document.getElementById("result"); box.innerHTML="Running…";
+ try{
+  const r=await fetch("/v1/signals/from-fhir",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(bundle)});
+  const x=await r.json(); if(!r.ok) throw new Error(JSON.stringify(x));
+  box.innerHTML='<div class="level">'+x.signal_level+'</div><div class="small">'+x.signal_count+' demo signal(s)</div>'+
+   x.triggered_signals.map(s=>'<div class="signal"><b>'+s.label+'</b><div class="small">'+s.reason+'</div></div>').join("")+
+   '<div class="small" style="margin-top:12px">'+x.disclaimer+'</div>';
+ }catch(e){box.textContent="API error: "+e.message}
+}
+</script>
+</body></html>
