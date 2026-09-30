@@ -1,0 +1,23 @@
+name: v0.2-research-tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install
+        run: pip install -r requirements.txt
+      - name: Run 39 tests
+        run: pytest -q
+      - name: Reproduce experiment
+        run: python -m research.run_experiment > /tmp/medisignal-results.json
+      - name: Verify study shape
+        run: python -c "import json; x=json.load(open('/tmp/medisignal-results.json')); assert x['design']['unique_patient_cases']==112; assert x['design']['pipeline_evaluations']==336"
