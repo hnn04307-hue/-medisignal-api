@@ -1,76 +1,56 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MediSignal API</title>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MediSignal Research Portfolio</title>
 <style>
-:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233f;background:#f4f7fb}
-*{box-sizing:border-box}body{margin:0}.wrap{max-width:1080px;margin:auto;padding:40px 24px 64px}
-.hero{background:#10233f;color:white;border-radius:24px;padding:38px;box-shadow:0 18px 48px #10233f20}
-.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}.hero h1{font-size:44px;margin:10px 0 12px}
-.hero p{max-width:760px;line-height:1.65;color:#d7e1ef}
-.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.tag{padding:8px 12px;border:1px solid #ffffff2b;border-radius:999px;font-size:13px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.card{background:white;border:1px solid #dfe7f1;border-radius:20px;padding:24px;box-shadow:0 8px 24px #10233f0b}
-h2{margin:0 0 12px;font-size:20px}.muted{color:#607089;font-size:14px;line-height:1.6}
-label{font-size:13px;font-weight:700}input{width:100%;padding:11px;border:1px solid #cad5e2;border-radius:10px;margin:6px 0 12px}
-button,a.btn{display:inline-block;border:0;border-radius:10px;background:#153b6b;color:white;padding:11px 16px;font-weight:700;text-decoration:none;cursor:pointer}
-.result{margin-top:16px;padding:15px;border-radius:12px;background:#f5f8fc;border:1px solid #dce6f2}.level{font-size:24px;font-weight:800;margin-bottom:8px}
-.signal{padding:10px 0;border-top:1px solid #e0e7f0}.small{font-size:12px;color:#6d7b90}
-.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#0e1b2b;color:#d8e7ff;padding:14px;border-radius:12px;overflow:auto}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.hero h1{font-size:34px}}
-</style>
-</head>
-<body><main class="wrap">
-<section class="hero">
-<div class="kicker">FHIR R4 · FastAPI · OpenAPI</div>
-<h1>MediSignal API</h1>
-<p>A research portfolio prototype that turns structured synthetic FHIR R4 observations into transparent, explainable demo signals through a deployable REST API.</p>
-<div class="tags"><span class="tag">Synthetic data only</span><span class="tag">Explainable rules</span><span class="tag">Not for clinical use</span></div>
-<div class="links"><a class="btn" href="/docs">Open Swagger API</a><a class="btn" href="/health">Health check</a></div>
-</section>
-<section class="grid">
-<div class="card"><h2>Interactive demonstration</h2><p class="muted">Edit the synthetic values, then run the API. Values are converted into a FHIR R4 Bundle in the browser and sent to <code>/v1/signals/from-fhir</code>.</p>
-<label>Birth date</label><input id="birth" type="date" value="1958-03-10">
-<label>Systolic BP (mmHg)</label><input id="sys" type="number" value="152">
-<label>Diastolic BP (mmHg)</label><input id="dia" type="number" value="92">
-<label>BMI (kg/m²)</label><input id="bmi" type="number" step="0.1" value="31.2">
-<button onclick="run()">Analyze synthetic FHIR</button>
-<div id="result" class="result"><span class="small">No analysis run yet.</span></div></div>
-<div class="card"><h2>Data flow</h2>
-<div class="code">FHIR R4 Bundle
-    ↓
-Validation
-    ↓
-Feature extraction
-    ↓
-Explainable demo rules
-    ↓
-JSON signal response
-    ↓
-REST API / Swagger</div>
-<h2 style="margin-top:22px">Scope</h2><p class="muted">This project demonstrates interoperability-oriented data handling and API implementation. The included thresholds are educational examples, not validated clinical guidelines, risk predictions, diagnosis, treatment advice, or a medical device.</p>
-</div>
-</section>
-</main>
+:root{font-family:Inter,system-ui,sans-serif;color:#15243a;background:#f4f7fb;--navy:#10233f;--blue:#153b6b;--muted:#66758b;--line:#dfe7f1;--green:#13745a;--red:#a33434;--amber:#9a6500}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1160px;margin:auto;padding:28px 20px 64px}.hero{background:var(--navy);color:#fff;border-radius:26px;padding:40px}.k{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.7}.hero h1{font-size:44px;margin:9px 0 12px}.hero p{color:#d9e3ef;max-width:850px;line-height:1.7}.tags,.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tag{border:1px solid #ffffff2d;border-radius:999px;padding:7px 11px;font-size:12px}.btn{background:#fff;color:var(--navy);padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:800;font-size:13px}.btn.alt{background:#ffffff10;color:#fff;border:1px solid #ffffff2b}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;margin-top:18px;box-shadow:0 8px 24px #10233f0a}.card h2{margin:4px 0 12px}.q{font-size:22px;line-height:1.55;font-weight:800}.muted{color:var(--muted);line-height:1.65;font-size:14px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.m{border:1px solid var(--line);border-radius:15px;padding:17px}.m span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase}.m strong{font-size:29px;display:block;margin:7px 0}.bad{color:var(--red)}.warn{color:var(--amber)}.good{color:var(--green)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left}th{font-size:11px;text-transform:uppercase;color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fbfcfe;font-size:13px}.step b{display:block;margin-bottom:5px}.controls{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.controls label{font-size:12px;font-weight:800}.controls select{display:block;margin-top:6px;padding:11px;border:1px solid #cad5e2;border-radius:10px;min-width:280px}.controls button{border:0;background:var(--blue);color:#fff;padding:12px 16px;border-radius:10px;font-weight:800}.trace{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.box{border:1px solid var(--line);border-radius:14px;padding:14px}.box h3{font-size:13px;margin:0 0 8px}.code{background:#0e1b2b;color:#d8e7ff;padding:12px;border-radius:10px;font:11px ui-monospace,monospace;white-space:pre-wrap;overflow:auto;max-height:300px}.pipes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.pipe{border:1px solid var(--line);border-radius:14px;padding:13px}.pipe b{display:block}.failure{border-left:4px solid #bdc9d7;background:#fafcff;border-radius:10px;padding:12px;margin:9px 0}.failure small{color:var(--muted)}.foot{font-size:12px;color:var(--muted);line-height:1.6;margin-top:10px}.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+@media(max-width:850px){.metrics,.flow,.pipes{grid-template-columns:1fr 1fr}.grid,.trace{grid-template-columns:1fr}}@media(max-width:560px){.metrics,.flow,.pipes{grid-template-columns:1fr}.hero{padding:27px 22px}.hero h1{font-size:32px}.wrap{padding:14px 10px 44px}}
+</style></head><body><main class="wrap">
+<section class="hero"><div class="k">FHIR R4 · DATA QUALITY · REPRODUCIBLE EXPERIMENT</div><h1>MediSignal Research Portfolio</h1>
+<p>합성 FHIR R4에서 단위 차이·결측·중복·지원하지 않는 단위·비정상 입력이 신호 추출에 미치는 영향을 비교하고, 표준화와 품질 검증이 오류와 판단 보류를 어떻게 바꾸는지 측정합니다.</p>
+<div class="tags"><span class="tag">Synthetic data only</span><span class="tag">112 stress-test cases</span><span class="tag">336 evaluations</span><span class="tag">Not for clinical use</span></div>
+<div class="links"><a class="btn" href="/docs">Swagger API</a><a class="btn alt" href="/v1/research/results">Results JSON</a><a class="btn alt" href="/health">Health</a></div></section>
+
+<section class="card"><div class="k" style="color:#607089">RESEARCH QUESTION</div><div class="q">검사 데이터의 단위 차이·결측·중복이 신호 추출에 미치는 영향을 표준화와 품질 검증으로 얼마나 줄일 수 있는가?</div>
+<p class="muted">Raw → Standardized → Validated의 3단계를 같은 synthetic reference와 비교합니다. 품질 검증에서는 모호한 입력을 강제로 분류하지 않고 <b>hold</b>하여 “틀린 판단”과 “판단 보류”를 분리합니다.</p></section>
+
+<section class="card"><div class="k" style="color:#607089">MEASURED RESULTS</div><h2>재현 가능한 합성 스트레스 테스트</h2>
+<div class="metrics"><div class="m"><span>Raw silent error</span><strong id="r0" class="bad">-</strong><small>unit ignored</small></div><div class="m"><span>Standardized silent error</span><strong id="r1" class="warn">-</strong><small>supported units normalized</small></div><div class="m"><span>Validated silent error</span><strong id="r2" class="good">-</strong><small>quality checks added</small></div><div class="m"><span>Validated hold rate</span><strong id="rh">-</strong><small>unsafe inputs withheld</small></div></div>
+<div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Pipeline</th><th>N</th><th>Correct</th><th>Silent error</th><th>Hold</th><th>Agreement among decided</th></tr></thead><tbody id="summary"></tbody></table></div>
+<p class="foot"><b>주의:</b> 오류 상황을 의도적으로 많이 넣은 fault-enriched synthetic set입니다. 백분율은 실제 병원 데이터 오류율이나 임상 성능이 아닙니다.</p></section>
+
+<section class="grid"><div class="card"><div class="k" style="color:#607089">DESIGN</div><h2>실험 설계</h2><div class="flow"><div class="step"><b>16 base profiles</b>Age · BP · BMI 조합</div><div class="step"><b>7 perturbations</b>unit · missing · duplicate · corrupted input</div><div class="step"><b>112 cases × 3</b>336 pipeline evaluations</div></div></div>
+<div class="card"><div class="k" style="color:#607089">METRICS</div><h2>결과를 구분해 측정</h2><p class="muted"><b>Silent error</b>: 잘못된 결과를 내면서 proceed한 비율<br><b>Hold rate</b>: 품질 경고로 판단을 보류한 비율<br><b>Agreement among decided</b>: 실제 결정한 케이스 중 reference와 완전히 일치한 비율</p></div></section>
+
+<section class="card"><div class="k" style="color:#607089">PERTURBATION BREAKDOWN</div><h2>어떤 오류가 어느 단계에서 잡히는가</h2><div style="overflow:auto"><table><thead><tr><th>Condition</th><th>Raw error</th><th>Standardized error</th><th>Validated error</th><th>Validated hold</th></tr></thead><tbody id="breakdown"></tbody></table></div></section>
+
+<section class="card"><div class="k" style="color:#607089">PROVENANCE DEMO</div><h2>원본값 → 변환 → 경고 → 규칙 → 결과</h2>
+<div class="controls"><label>Failure scenario<select id="scenario"><option value="unit">Unit variation — kPa → mmHg</option><option value="missing">Missing BMI</option><option value="duplicate">Conflicting duplicate</option><option value="outlier">Out-of-range corruption</option></select></label><button id="run">근거 추적 실행</button></div>
+<div class="trace"><div class="box"><h3>1. Raw measurements</h3><div id="raw" class="code">-</div></div><div class="box"><h3>2. Unit normalization</h3><div id="norm" class="code">-</div></div><div class="box"><h3>3. Quality checks</h3><div id="quality" class="code">-</div></div><div class="box"><h3>4. Rule evaluation</h3><div id="rules" class="code">-</div></div></div>
+<div id="pipes" class="pipes"></div></section>
+
+<section class="card"><div class="k" style="color:#607089">FAILURE ANALYSIS</div><h2>실패 사례도 연구 결과로 제시</h2><div id="failures">불러오는 중…</div></section>
+
+<section class="grid"><div class="card"><div class="k" style="color:#607089">REPRODUCIBILITY</div><h2>코드와 결과를 분리</h2><p class="muted">실험 정의는 <b>research/run_experiment.py</b>, 연구 프로토콜은 <b>research/PROTOCOL.md</b>, API 동작 검증은 GitHub Actions/pytest로 관리합니다.</p></div>
+<div class="card"><div class="k" style="color:#607089">SCOPE</div><h2>주장의 범위</h2><p class="muted">이 프로젝트는 데이터 처리 소프트웨어 실험입니다. 실제 환자 데이터, 진단 정확도, 치료효과 또는 의료기기 성능을 주장하지 않습니다.</p></div></section>
+<div class="footer">MediSignal v0.2 · Synthetic FHIR R4 Data-Quality Research Portfolio</div></main>
 <script>
-async function run(){
- const patient="synthetic-patient-001";
- const bundle={resourceType:"Bundle",type:"collection",entry:[
-  {resource:{resourceType:"Patient",id:patient,birthDate:document.getElementById("birth").value}},
-  {resource:{resourceType:"Observation",status:"final",subject:{reference:"Patient/"+patient},code:{coding:[{system:"http://loinc.org",code:"85354-9"}]},component:[
-   {code:{coding:[{system:"http://loinc.org",code:"8480-6"}]},valueQuantity:{value:+document.getElementById("sys").value,unit:"mmHg"}},
-   {code:{coding:[{system:"http://loinc.org",code:"8462-4"}]},valueQuantity:{value:+document.getElementById("dia").value,unit:"mmHg"}}]}},
-  {resource:{resourceType:"Observation",status:"final",subject:{reference:"Patient/"+patient},code:{coding:[{system:"http://loinc.org",code:"39156-5"}]},valueQuantity:{value:+document.getElementById("bmi").value,unit:"kg/m2"}}}
- ]};
- const box=document.getElementById("result"); box.innerHTML="Running…";
- try{
-  const r=await fetch("/v1/signals/from-fhir",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(bundle)});
-  const x=await r.json(); if(!r.ok) throw new Error(JSON.stringify(x));
-  box.innerHTML='<div class="level">'+x.signal_level+'</div><div class="small">'+x.signal_count+' demo signal(s)</div>'+
-   x.triggered_signals.map(s=>'<div class="signal"><b>'+s.label+'</b><div class="small">'+s.reason+'</div></div>').join("")+
-   '<div class="small" style="margin-top:12px">'+x.disclaimer+'</div>';
- }catch(e){box.textContent="API error: "+e.message}
-}
-</script>
-</body></html>
+function pct(x){return (x*100).toFixed(1)+"%"}
+async function loadResults(){var r=await fetch("/v1/research/results"),x=await r.json(),by={};x.summary.forEach(function(s){by[s.pipeline]=s});
+document.getElementById("r0").textContent=pct(by.raw.silent_error_rate);document.getElementById("r1").textContent=pct(by.standardized.silent_error_rate);document.getElementById("r2").textContent=pct(by.validated.silent_error_rate);document.getElementById("rh").textContent=pct(by.validated.hold_rate);
+document.getElementById("summary").innerHTML=x.summary.map(function(s){return "<tr><td><b>"+s.pipeline+"</b></td><td>"+s.n+"</td><td>"+pct(s.overall_correct_rate)+"</td><td>"+pct(s.silent_error_rate)+"</td><td>"+pct(s.hold_rate)+"</td><td>"+pct(s.agreement_among_decided)+"</td></tr>"}).join("");
+var map={};x.breakdown.forEach(function(b){map[b.pipeline+"|"+b.perturbation]=b});document.getElementById("breakdown").innerHTML=x.design.perturbations.map(function(c){var a=map["raw|"+c],s=map["standardized|"+c],v=map["validated|"+c];return "<tr><td><b>"+c+"</b></td><td>"+a.error_n+"/16</td><td>"+s.error_n+"/16</td><td>"+v.error_n+"/16</td><td>"+v.hold_n+"/16</td></tr>"}).join("");
+document.getElementById("failures").innerHTML=x.failure_examples.map(function(f){return "<div class='failure'><b>"+f.patient_id+" · "+f.perturbation+" · "+f.pipeline+" → "+f.outcome+"</b><br><small>reference: "+(f.reference_signals||"∅")+" / output: "+(f.output_signals||"∅")+(f.warning_codes?" / "+f.warning_codes:"")+"</small></div>"}).join("")}
+function q(v,u,c){return {value:v,unit:u,system:"http://unitsofmeasure.org",code:c||u}}
+function bundle(s){var p=s==="missing"?{id:"T02",birth:"1976-01-01",sys:125,dia:75,bmi:32}:{id:"T01",birth:"1976-01-01",sys:150,dia:75,bmi:24};var e=[
+{resource:{resourceType:"Patient",id:p.id,birthDate:p.birth}},
+{resource:{resourceType:"Observation",id:p.id+"-bp",status:"final",subject:{reference:"Patient/"+p.id},code:{coding:[{system:"http://loinc.org",code:"85354-9"}]},component:[{code:{coding:[{system:"http://loinc.org",code:"8480-6"}]},valueQuantity:q(p.sys,"mmHg","mm[Hg]")},{code:{coding:[{system:"http://loinc.org",code:"8462-4"}]},valueQuantity:q(p.dia,"mmHg","mm[Hg]")}]}},
+{resource:{resourceType:"Observation",id:p.id+"-bmi",status:"final",subject:{reference:"Patient/"+p.id},code:{coding:[{system:"http://loinc.org",code:"39156-5"}]},valueQuantity:q(p.bmi,"kg/m2")}}];
+if(s==="unit"){e[1].resource.component[0].valueQuantity=q(p.sys/7.50062,"kPa");e[1].resource.component[1].valueQuantity=q(p.dia/7.50062,"kPa")}
+if(s==="missing"){e=e.slice(0,2)}
+if(s==="duplicate"){var d=JSON.parse(JSON.stringify(e[1])),b=JSON.parse(JSON.stringify(e[2]));d.resource.id="T01-bp-conflict";d.resource.component[0].valueQuantity=q(120,"mmHg","mm[Hg]");b.resource.id="T01-bmi-conflict";b.resource.valueQuantity=q(34,"kg/m2");e.push(d,b)}
+if(s==="outlier"){e[1].resource.component[0].valueQuantity=q(450,"mmHg","mm[Hg]")}
+return {resourceType:"Bundle",type:"collection",entry:e}}
+async function trace(){var r=await fetch("/v1/research/trace",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(bundle(document.getElementById("scenario").value))}),x=await r.json();document.getElementById("raw").textContent=JSON.stringify(x.raw_measurements,null,2);document.getElementById("norm").textContent=JSON.stringify(x.normalization,null,2);document.getElementById("quality").textContent=JSON.stringify(x.quality_checks,null,2);document.getElementById("rules").textContent=JSON.stringify(x.rule_evaluation,null,2);document.getElementById("pipes").innerHTML=Object.keys(x.pipeline_outputs).map(function(k){var p=x.pipeline_outputs[k];return "<div class='pipe'><b>"+k+"</b><strong class='"+(p.decision==="hold"?"warn":"good")+"'>"+p.decision.toUpperCase()+"</strong><div class='foot'>signals: "+(p.signals.join(", ")||"∅")+"</div></div>"}).join("")}
+document.getElementById("run").onclick=trace;loadResults();trace();
+</script></body></html>
