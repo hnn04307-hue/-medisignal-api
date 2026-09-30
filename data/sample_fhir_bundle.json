@@ -1,0 +1,43 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "synthetic-patient-001",
+        "gender": "female",
+        "birthDate": "1958-03-10"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bp-001",
+        "status": "final",
+        "subject": {"reference": "Patient/synthetic-patient-001"},
+        "code": {"coding": [{"system": "http://loinc.org", "code": "85354-9"}]},
+        "component": [
+          {
+            "code": {"coding": [{"system": "http://loinc.org", "code": "8480-6"}]},
+            "valueQuantity": {"value": 152, "unit": "mmHg"}
+          },
+          {
+            "code": {"coding": [{"system": "http://loinc.org", "code": "8462-4"}]},
+            "valueQuantity": {"value": 92, "unit": "mmHg"}
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bmi-001",
+        "status": "final",
+        "subject": {"reference": "Patient/synthetic-patient-001"},
+        "code": {"coding": [{"system": "http://loinc.org", "code": "39156-5"}]},
+        "valueQuantity": {"value": 31.2, "unit": "kg/m2"}
+      }
+    }
+  ]
+}
